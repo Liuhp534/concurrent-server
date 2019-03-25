@@ -8,8 +8,8 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Test_04 {
 	
 	public static void main(String[] args) {
-		TestReentrantlock t = new TestReentrantlock();
-		//TestSync t = new TestSync();
+		//TestReentrantlock t = new TestReentrantlock();
+		TestSync t = new TestSync();
 		Thread t1 = new Thread(t);
 		Thread t2 = new Thread(t);
 		t1.start();

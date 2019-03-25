@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class Test_03_ConcurrentLinkedQueue {
 	
 	public static void main(String[] args) {
-		Queue<String> queue = new ConcurrentLinkedQueue<>();
+		Queue<String> queue = new ConcurrentLinkedQueue<String>();
 		for(int i = 0; i < 10; i++){
 			queue.offer("value" + i);
 		}

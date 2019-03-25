@@ -5,7 +5,7 @@ package cn.liuhp;
  * @author: liuhp534
  * @create: 2019-03-24 14:24
  */
-public class Test1 {
+public class PracticeSynchronized {
 
     private int count = 0;
 
@@ -27,7 +27,7 @@ public class Test1 {
     }
 
     public static void main(String[] args) {
-        final Test1 test1 = new Test1();
+        final PracticeSynchronized test1 = new PracticeSynchronized();
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -46,8 +46,9 @@ public class Test1 {
                 test1.m2();
             }
         });
-        t2.start();
         t1.start();
+        t2.start();
+
     }
 
 }

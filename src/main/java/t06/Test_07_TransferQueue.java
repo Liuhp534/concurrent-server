@@ -13,7 +13,7 @@ import java.util.concurrent.TransferQueue;
 
 public class Test_07_TransferQueue {
 	
-	TransferQueue<String> queue = new LinkedTransferQueue<>();
+	TransferQueue<String> queue = new LinkedTransferQueue<String>();
 	
 	public static void main(String[] args) {
 		final Test_07_TransferQueue t = new Test_07_TransferQueue();

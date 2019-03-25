@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Test_05_ArrayBlockingQueue {
 	
-	final BlockingQueue<String> queue = new ArrayBlockingQueue<>(3);
+	final BlockingQueue<String> queue = new ArrayBlockingQueue<String>(3);
 	
 	public static void main(String[] args) {
 		final Test_05_ArrayBlockingQueue t = new Test_05_ArrayBlockingQueue();

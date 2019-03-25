@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Test_06_DelayQueue {
 	
-	static BlockingQueue<MyTask_06> queue = new DelayQueue<>();
+	static BlockingQueue<MyTask_06> queue = new DelayQueue<MyTask_06>();
 	
 	public static void main(String[] args) throws InterruptedException {
 		long value = System.currentTimeMillis();

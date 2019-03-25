@@ -52,7 +52,7 @@ public class Test_04_ParallelComputingWithFixedThreadPool {
 			this.end = end;
 		}
 		public List<Integer> call() throws Exception{
-			List<Integer> results = new ArrayList<>();
+			List<Integer> results = new ArrayList<Integer>();
 			boolean isPrime = true;
 			for(int i = start; i <= end; i++){
 				for(int j = 1; j < Math.sqrt(i); j++){
@@ -72,7 +72,7 @@ public class Test_04_ParallelComputingWithFixedThreadPool {
 	}
 	
 	private static List<Integer> computing(Integer start, Integer end){
-		List<Integer> results = new ArrayList<>();
+		List<Integer> results = new ArrayList<Integer>();
 		boolean isPrime = true;
 		for(int i = start; i <= end; i++){
 			for(int j = 1; j < Math.sqrt(i); j++){

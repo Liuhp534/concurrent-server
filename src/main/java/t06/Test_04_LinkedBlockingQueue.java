@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Test_04_LinkedBlockingQueue {
 	
-	final BlockingQueue<String> queue = new LinkedBlockingQueue<>();
+	final BlockingQueue<String> queue = new LinkedBlockingQueue<String>();
 	final Random r = new Random();
 	
 	public static void main(String[] args) {

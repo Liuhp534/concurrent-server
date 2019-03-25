@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Test_08_SynchronusQueue {
 	
-	BlockingQueue<String> queue = new SynchronousQueue<>();
+	BlockingQueue<String> queue = new SynchronousQueue<String>();
 	
 	public static void main(String[] args) {
 		final Test_08_SynchronusQueue t = new Test_08_SynchronusQueue();

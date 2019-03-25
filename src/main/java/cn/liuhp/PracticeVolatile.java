@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
  * @author: liuhp534
  * @create: 2019-03-24 16:46
  */
-public class Practice1 {
+public class PracticeVolatile {
 
     List<String> list = new ArrayList<String>();//只要没有volatile 的确不能共享变量，但是奇怪的是stopFlag加了也会影响其他的,前提对应的方法使用了，也就是
     //说一个方法只要使用了volatile的变量，会是其他没有使用的也有效果
@@ -46,17 +46,17 @@ public class Practice1 {
     }
 
     public static void main(String[] args) {
-        final Practice1 practice1 = new Practice1();
+        final PracticeVolatile practiceVolatile = new PracticeVolatile();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                practice1.m2Stop();
+                practiceVolatile.m2Stop();
             }
         }).start();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                practice1.m1Add();
+                practiceVolatile.m1Add();
             }
         }).start();
     }

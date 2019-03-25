@@ -15,7 +15,7 @@ public class Test_02_CopyOnWriteList {
 	public static void main(String[] args) {
 		// final List<String> list = new ArrayList<>();
 		// final List<String> list = new Vector<>();
-		final List<String> list = new CopyOnWriteArrayList<>();
+		final List<String> list = new CopyOnWriteArrayList<String>();
 		final Random r = new Random();
 		Thread[] array = new Thread[100];
 		final CountDownLatch latch = new CountDownLatch(array.length);

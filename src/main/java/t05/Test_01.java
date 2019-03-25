@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 public class Test_01 {
 
 	volatile static String name = "zhangsan";
-	static ThreadLocal<String> tl = new ThreadLocal<>();
+	static ThreadLocal<String> tl = new ThreadLocal<String>();
 	
 	public static void main(String[] args) {
 		new Thread(new Runnable() {

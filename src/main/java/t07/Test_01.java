@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Test_01 {
 	
-	static List<String> list = new ArrayList<>();
+	static List<String> list = new ArrayList<String>();
 	// static List<String> list = new Vector<>();
 	
 	static{

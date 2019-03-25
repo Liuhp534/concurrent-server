@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Test_02 {
 	
-	static Queue<String> list = new ConcurrentLinkedQueue<>();
+	static Queue<String> list = new ConcurrentLinkedQueue<String>();
 	
 	static{
 		for(int i = 0; i < 10000; i++){

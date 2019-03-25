@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 public class TestContainer01<E> {
 
-	private final LinkedList<E> list = new LinkedList<>();
+	private final LinkedList<E> list = new LinkedList<E>();
 	private final int MAX = 10;
 	private int count = 0;
 	
@@ -48,7 +48,7 @@ public class TestContainer01<E> {
 	}
 	
 	public static void main(String[] args) {
-		final TestContainer01<String> c = new TestContainer01<>();
+		final TestContainer01<String> c = new TestContainer01<String>();
 		for(int i = 0; i < 10; i++){
 			new Thread(new Runnable() {
 				@Override
