@@ -2,27 +2,28 @@ package t04;
 
 import cn.liuhp.SleepUtils;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @description: 同步容器
- * 生产者消费者模型，开始生产的时候有来有回，但是两个生产线程阻塞之后，唤醒之后只有一个线程有优先权？？？
+ * 生产者消费者模型，开始生产的时候有来有回，但是两个生产线程阻塞之后，唤醒之后两个线程交叉进行和synchronize不同，没有加fair=true
  * @author: hz16092620
  * @create: 2019-03-25 16:49
  */
-public class PracticeConcurrentContainer {
+public class PracticeReentrantLockContainer {
 
     public static void main(String[] args) {
-        final ConcurrentContainer container = new ConcurrentContainer();
+        final ReentrantLockContainer container = new ReentrantLockContainer();
         Thread consumer1 = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     while (true) {
-                        SleepUtils.sleepSeconds(1);
+                        SleepUtils.sleepSeconds(2);
                         System.out.println("消费产品 : " + container.getE());
                     }
                 } catch (InterruptedException e) {
@@ -36,7 +37,7 @@ public class PracticeConcurrentContainer {
             public void run() {
                 try {
                     for (int i = 0; i < 20; i++) {
-                        SleepUtils.sleepMillis(100);
+                        SleepUtils.sleepMillis(300);
                         container.addE(i+"");
                     }
                 } catch (Exception e) {
@@ -49,7 +50,7 @@ public class PracticeConcurrentContainer {
             public void run() {
                 try {
                     for (int i = 0; i < 20; i++) {
-                        SleepUtils.sleepMillis(100);
+                        SleepUtils.sleepMillis(300);
                         container.addE(i+"");
                     }
                 } catch (Exception e) {
@@ -64,25 +65,34 @@ public class PracticeConcurrentContainer {
 }
 
 /**
- * synchronized同步容器
+ * ReentrantLock同步容器
  */
-class ConcurrentContainer {
+class ReentrantLockContainer {
 
     private int maxSize = 10;
 
     private List<String> list = new LinkedList<String>();
 
+    private Lock lock = new ReentrantLock(true);
+
+    private Condition consumer = lock.newCondition();
+    private Condition productor = lock.newCondition();
+
+
     /**
      * 添加元素
      */
     public void addE(String str) throws Exception {
-        synchronized (this) {
+        try {
+            lock.lock();
             while (this.size() >= 10) {//需要用while配置wait/notify使用，这样可以持续判断
-                this.wait();//达到最大个数的时候阻塞状态
+                productor.await();//达到最大个数的时候阻塞状态
             }
             System.out.println(Thread.currentThread().getName() + "生产产品 : " + str);
             this.list.add(Thread.currentThread().getName() + " 生产产品 : " + str);
-            this.notifyAll();//唤醒其他线程
+            consumer.signalAll();//唤醒其他线程
+        } finally {
+            lock.unlock();
         }
     }
 
@@ -90,15 +100,18 @@ class ConcurrentContainer {
      * 获取元素
      */
     public String getE() throws InterruptedException {
-        synchronized (this) {
+        try {
+            lock.lock();
             while (this.size() <= 0) {
-                this.wait();
+                consumer.await();//没有产品的时候阻塞状态
             }
             String temp = null;
             temp = this.list.get(0);
             this.list.remove(temp);
-            this.notifyAll();//唤醒其他线程
+            productor.signalAll();//唤醒其他线程
             return temp;
+        } finally {
+            lock.unlock();
         }
     }
 
@@ -107,14 +120,12 @@ class ConcurrentContainer {
         return list.size();
     }
 
-    public ConcurrentContainer() {
+    public ReentrantLockContainer() {
     }
 
-    public ConcurrentContainer(int maxSize) {
+    public ReentrantLockContainer(int maxSize) {
         this.maxSize = maxSize;
     }
 }
-
-
 
 

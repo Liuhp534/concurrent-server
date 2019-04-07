@@ -17,4 +17,13 @@ public class SleepUtils {
             e.printStackTrace();
         }
     }
+
+    public static void sleepMillis(int millis) {
+        try {
+            TimeUnit.MILLISECONDS.sleep(millis);
+        } catch (Exception e) {
+            System.out.println("睡眠异常");
+            e.printStackTrace();
+        }
+    }
 }

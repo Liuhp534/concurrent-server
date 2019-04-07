@@ -1,15 +1,19 @@
 package cn.liuhp;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * @description: 死锁例子
  * @author: hz16092620
  * @create: 2019-03-25 15:50
  */
-public class DeadLock {
+public class ReentrantLockDeadLock {
 
     volatile boolean flag = Boolean.TRUE;
-    Object lock1 = new Object();
-    Object lock2 = new Object();
+    Lock lock1 = new ReentrantLock();
+    Lock lock2 = new ReentrantLock();
+
 
     /**
     * @Description:
@@ -21,13 +25,17 @@ public class DeadLock {
     * @date 2019/3/25 15:56
     */
     public void m1() {
-        synchronized (lock1) {//获取lock1锁
+        try {
+            lock1.lock();
             System.out.println("m1 使用lock1");
             SleepUtils.sleepSeconds(3);
-            synchronized (lock2) {
-                System.out.println("m1操作 lock2 " + lock2.toString());
-            }
+            lock2.lock();
+            System.out.println("m1操作 lock2 " + lock2.toString());
+        } finally {
+            lock1.unlock();
             System.out.println("m1 释放lock1");
+            lock2.unlock();
+            System.out.println("m1 释放lock2");
         }
     }
 
@@ -41,20 +49,21 @@ public class DeadLock {
     * @date 2019/3/25 15:55
     */
     public void m2() {
-        synchronized (lock2) {
+        try {
+            lock2.lock();
             System.out.println("m2 使用lock2");
-            synchronized (lock1) {
-                System.out.println("m2 操作lock1");
-            }
-            /*while (flag) {
-
-            }*/
+            lock1.lock();
+            System.out.println("m2 操作lock1");
+        } finally {
+            lock2.unlock();
             System.out.println("m2 释放lock2");
+            lock1.unlock();
+            System.out.println("m2 释放lock1");
         }
     }
 
     public static void main(String[] args) {
-        final DeadLock deadLock = new DeadLock();
+        final ReentrantLockDeadLock deadLock = new ReentrantLockDeadLock();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -62,7 +71,7 @@ public class DeadLock {
             }
         }).start();
 
-        SleepUtils.sleepSeconds(1);
+        SleepUtils.sleepSeconds(1);//等lock1锁完成
 
         new Thread(new Runnable() {
             @Override
