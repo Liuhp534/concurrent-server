@@ -11,7 +11,7 @@ public class Test_03_ConcurrentLinkedQueue {
 	
 	public static void main(String[] args) {
 		Queue<String> queue = new ConcurrentLinkedQueue<String>();
-		for(int i = 0; i < 10; i++){
+		for(int i = 0; i < 1; i++){
 			queue.offer("value" + i);
 		}
 		
@@ -23,6 +23,9 @@ public class Test_03_ConcurrentLinkedQueue {
 		System.out.println(queue.size());
 		
 		// poll() -> 获取queue中的首数据
+		System.out.println(queue.poll());
+		System.out.println(queue.size());
+
 		System.out.println(queue.poll());
 		System.out.println(queue.size());
 	}

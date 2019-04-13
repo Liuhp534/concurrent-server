@@ -12,8 +12,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TransferQueue;
 
 public class Test_07_TransferQueue {
-	
-	TransferQueue<String> queue = new LinkedTransferQueue<String>();
+
+	TransferQueue<String> queue = new LinkedTransferQueue<>();
 	
 	public static void main(String[] args) {
 		final Test_07_TransferQueue t = new Test_07_TransferQueue();

@@ -7,6 +7,8 @@
  */
 package t06;
 
+import cn.liuhp.SleepUtils;
+
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -14,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Test_04_LinkedBlockingQueue {
 	
-	final BlockingQueue<String> queue = new LinkedBlockingQueue<String>();
+	final BlockingQueue<String> queue = new LinkedBlockingQueue<String>(2);
 	final Random r = new Random();
 	
 	public static void main(String[] args) {
@@ -30,25 +32,37 @@ public class Test_04_LinkedBlockingQueue {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+					t.queue.offer("");
+					try {
+						t.queue.offer("", 300, TimeUnit.MILLISECONDS);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					System.out.println(t.queue);
+					t.queue.add("");
+
 				}
 			}
 		}, "producer").start();
 		
-		for(int i = 0; i < 3; i++){
+		/*for(int i = 0; i < 3; i++){
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
 					while(true){
+						*//*System.out.println(Thread.currentThread().getName() +
+								" - " + t.queue.take());*//*
+						//SleepUtils.sleepMillis(300);
 						try {
-							System.out.println(Thread.currentThread().getName() + 
-									" - " + t.queue.take());
+							System.out.println(Thread.currentThread().getName() +
+									" - " + t.queue.poll(300, TimeUnit.MILLISECONDS));
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
 					}
 				}
 			}, "consumer"+i).start();
-		}
+		}*/
 	}
 
 }
