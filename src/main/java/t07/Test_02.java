@@ -12,7 +12,7 @@ public class Test_02 {
 	
 	static{
 		for(int i = 0; i < 10000; i++){
-			list.add("String " + i);
+			list.add("String ------------------" + i);
 		}
 	}
 	
@@ -24,6 +24,7 @@ public class Test_02 {
 					while(true){
 						String str = list.poll();
 						if(str == null){
+							System.out.println("I'm null value");
 							break;
 						}
 						System.out.println(Thread.currentThread().getName() + " - " + str);

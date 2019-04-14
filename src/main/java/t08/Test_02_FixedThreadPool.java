@@ -44,6 +44,17 @@ public class Test_02_FixedThreadPool {
 		// 是否已经关闭， 是否调用过shutdown方法
 		System.out.println(service.isShutdown());
 		System.out.println(service);
+		service.execute(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					TimeUnit.MILLISECONDS.sleep(500);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				System.out.println(Thread.currentThread().getName() + " - test executor");
+			}
+		});
 		
 		try {
 			TimeUnit.SECONDS.sleep(2);
