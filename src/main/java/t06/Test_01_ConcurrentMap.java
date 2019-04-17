@@ -14,9 +14,9 @@ import java.util.concurrent.CountDownLatch;
 public class Test_01_ConcurrentMap {
 	
 	public static void main(String[] args) {
-		final Map<String, String> map = new Hashtable<String, String>();
-		// final Map<String, String> map = new ConcurrentHashMap<>();
-		// final Map<String, String> map = new ConcurrentSkipListMap<>();
+		// final Map<String, String> map = new Hashtable<String, String>();
+		final Map<String, String> map = new ConcurrentHashMap<String, String>();
+		// final Map<String, String> map = new ConcurrentSkipListMap<String, String>();
 		final Random r = new Random();
 		Thread[] array = new Thread[100];
 		final CountDownLatch latch = new CountDownLatch(array.length);
