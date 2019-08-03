@@ -8,6 +8,8 @@
  */
 package t01;
 
+import cn.liuhp.SleepUtils;
+
 import java.util.concurrent.TimeUnit;
 
 public class Test_05 {
@@ -27,21 +29,19 @@ public class Test_05 {
 	}
 	
 	public static void main(String[] args) {
-		final Test_05 t = new Test_05();
-		
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				t.m1(100);
-			}
-		}).start();
+		test1();
+	}
+
+	/*
+	* lambda 8可以不用显示的声明final
+	* 两个业务方法之间会有脏读的问题，如果两个方法之间没有互斥
+	* */
+	private static void test1() {
+		Test_05 t = new Test_05();
+		new Thread(() -> t.m1(100)).start();
+
 		System.out.println(t.m2());
-		try {
-			TimeUnit.SECONDS.sleep(3);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		SleepUtils.sleepSeconds(3);
 		System.out.println(t.m2());
 	}
-	
 }
