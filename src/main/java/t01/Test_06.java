@@ -30,23 +30,17 @@ public class Test_06 {
 	}
 	
 	public static void main(String[] args) {
-		
-		//new Test_06().m1();
-		final Test_06 test = new Test_06();
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				test.m2();
-			}
-		}).start();
+		test1();
+	}
 
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				test.m1();
-			}
-		}).start();
-		
+	/*
+	* synchronised 锁可以冲入
+	* */
+	private static void test1() {
+		Test_06 test = new Test_06();
+		new Thread(() -> test.m2()).start();
+
+		new Thread(() -> test.m1()).start();
 	}
 	
 }
