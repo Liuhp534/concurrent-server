@@ -6,7 +6,7 @@
  */
 package t01;
 
-import java.util.concurrent.TimeUnit;
+import cn.liuhp.SleepUtils;
 
 public class Test_08 {
 	int i = 0;
@@ -15,12 +15,7 @@ public class Test_08 {
 		while(true){
 			i++;
 			System.out.println(Thread.currentThread().getName() + " - " + i);
-			try {
-				TimeUnit.SECONDS.sleep(1);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			SleepUtils.sleepSeconds(2);
 			if(i == 5){
 				i = 1/0;
 			}
@@ -28,20 +23,13 @@ public class Test_08 {
 	}
 	
 	public static void main(String[] args) {
-		final Test_08 t = new Test_08();
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				t.m();
-			}
-		}, "t1").start();
-		
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				t.m();
-			}
-		}, "t2").start();
+		test1();
+	}
+
+	private static void test1() {
+		Test_08 t = new Test_08();
+		new Thread(() -> t.m(), "t1").start();
+		new Thread(() -> t.m(), "t2").start();
 	}
 	
 }
