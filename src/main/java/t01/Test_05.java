@@ -13,21 +13,25 @@ import cn.liuhp.SleepUtils;
 import java.util.concurrent.TimeUnit;
 
 public class Test_05 {
-	private double d = 0.0;
-	public synchronized void m1(double d){
-		try {
-			// 相当于复杂的业务逻辑代码。
-			TimeUnit.SECONDS.sleep(2);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		this.d = d;
+	private int d = 10;
+	public synchronized void m1(){
+		if (d > 0) {
+            System.out.println("执行任务");
+		    SleepUtils.sleepSeconds(3);//复杂的业务处理
+            d = d - 2;//消费
+        }
 	}
 	
-	public double m2(){
+	public int m2(){
+	    this.d = 0;
 		return this.d;
 	}
-	
+
+
+    public int m3(){
+        return this.d;
+    }
+
 	public static void main(String[] args) {
 		test1();
 	}
@@ -38,10 +42,11 @@ public class Test_05 {
 	* */
 	private static void test1() {
 		Test_05 t = new Test_05();
-		new Thread(() -> t.m1(100)).start();
+		new Thread(() -> t.m1()).start();
 
+        SleepUtils.sleepSeconds(1);
 		System.out.println(t.m2());
 		SleepUtils.sleepSeconds(3);
-		System.out.println(t.m2());
+		System.out.println(t.m3());
 	}
 }
