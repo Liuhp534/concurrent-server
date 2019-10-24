@@ -1,6 +1,8 @@
 package cn.id;
 
 import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 参考 https://segmentfault.com/a/1190000011282426?utm_source=tag-newest
@@ -30,7 +32,7 @@ public class IdWorker{
         this.sequence = sequence;
     }
 
-    private long twepoch = 1288834974657L;//这个为什么要使用
+    private long twepoch = 1288834974657L;//这个为什么要使用  原因 ：支持69.7年需要的id。2 ^41 /365/24/60/60/1000=69.7
 
     private long workerIdBits = 5L;
     private long datacenterIdBits = 5L;
@@ -93,12 +95,24 @@ public class IdWorker{
         return System.currentTimeMillis();
     }
 
+    public static boolean containsPlatform(byte value) {
+        if (value <= 0) {
+            return Boolean.FALSE;
+        }
+        int platformMask = 7;
+        return (value & platformMask) > 0;
+    }
+
     //---------------测试---------------
     public static void main(String[] args) {
-        IdWorker worker = new IdWorker(1,1,1);
+        System.out.println(Integer.toBinaryString(-1));
+        System.out.println(Integer.toBinaryString(12345));
+        System.out.println(Integer.toBinaryString(-12345));
+        System.out.println(Integer.toBinaryString(53191));
+       /* IdWorker worker = new IdWorker(1,1,1);
         for (int i = 0; i < 30; i++) {
             System.out.println(worker.nextId());
-        }
+        }*/
     }
 
 }
