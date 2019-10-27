@@ -23,7 +23,7 @@ public class DeadLock {
     public void m1() {
         synchronized (lock1) {//获取lock1锁
             System.out.println("m1 使用lock1");
-            SleepUtils.sleepSeconds(3);
+            SleepUtils.sleepSeconds(1);
             synchronized (lock2) {
                 System.out.println("m1操作 lock2 " + lock2.toString());
             }
@@ -43,35 +43,38 @@ public class DeadLock {
     public void m2() {
         synchronized (lock2) {
             System.out.println("m2 使用lock2");
+            SleepUtils.sleepSeconds(1);
             synchronized (lock1) {
                 System.out.println("m2 操作lock1");
             }
-            /*while (flag) {
+            while (flag) {
 
-            }*/
+            }
             System.out.println("m2 释放lock2");
         }
     }
 
     public static void main(String[] args) {
-        final DeadLock deadLock = new DeadLock();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                deadLock.m1();
-            }
-        }).start();
+        test1();
+    }
 
-        SleepUtils.sleepSeconds(1);
+    /*
+    * 死锁的例子
+    * */
+    private static void test1() {
+        DeadLock deadLock = new DeadLock();
+        new Thread(() -> deadLock.m1()).start();
+        new Thread(() -> deadLock.m2()).start();
+    }
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                deadLock.m2();
-            }
-        }).start();
-        SleepUtils.sleepSeconds(10);
+    /*
+    * volatile的使用
+    * */
+    private static void test2() {
+        DeadLock deadLock = new DeadLock();
+        new Thread(() -> deadLock.m2()).start();
+        SleepUtils.sleepSeconds(3);
         System.out.println("m2 退出执行逻辑");
-        deadLock.flag = Boolean.FALSE;
+        deadLock.flag = Boolean.FALSE;//执行重排序
     }
 }

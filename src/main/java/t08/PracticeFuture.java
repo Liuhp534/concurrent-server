@@ -32,21 +32,22 @@ public class PracticeFuture {
             public String call() throws Exception {
 
                 System.out.println(Thread.currentThread().getName());
-                SleepUtils.sleepMillis(3000);
+                //SleepUtils.sleepMillis(3000);
                 System.out.println("返回结果");
-                /*String str = "1";
+                String str = "1";
                 if ("1".equals(str)) {
+                    System.out.println("异常了");
                     throw new Exception();
-                }*/
+                }
                 return Thread.currentThread().getName();
             }
         });
 
         System.out.println(executorService);
         System.out.println(future);
-        try {
+        /*try {
             //SleepUtils.sleepMillis(30000);
-            System.out.println(future.get(1, TimeUnit.SECONDS));//就算执行有异常，也需要等到get时候才调用
+            System.out.println(future.get(20, TimeUnit.SECONDS));//就算执行有异常，也需要等到get时候才调用
         } catch (InterruptedException e) {
             System.out.println("11111");
             e.printStackTrace();
@@ -55,7 +56,8 @@ public class PracticeFuture {
             e.printStackTrace();
         } catch (TimeoutException e) {
             e.printStackTrace();
-        }
+        }*/
+        SleepUtils.sleepMillis(3000);
         System.out.println(executorService);
     }
 }
