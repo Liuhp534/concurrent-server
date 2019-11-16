@@ -9,21 +9,26 @@ import java.util.concurrent.*;
 
 public class DealBigList {
 
-    static ExecutorService executorService = new ThreadPoolExecutor(5, 5, 5L, TimeUnit.SECONDS,
-            new LinkedBlockingQueue<Runnable>(1), new DealBigList.ThreadPoolRejectHandler());//核心线程数2，最大线程数4，线程多久空闲销毁，工作队列
+    //4-耗时=4587
+    //10-耗时=1998
+    //50-耗时=417
+    //100-耗时=220
+    static ExecutorService executorService = new ThreadPoolExecutor(200, 200, 60L, TimeUnit.SECONDS,
+            new LinkedBlockingQueue<Runnable>());//核心线程数2，最大线程数4，线程多久空闲销毁，工作队列
 
 
     public static void main(String[] args) {
+        System.out.println(Runtime.getRuntime().availableProcessors());
         long start = System.currentTimeMillis();
         fun1();
-        System.out.println(System.currentTimeMillis() - start);
+        System.out.println("耗时=" + (System.currentTimeMillis() - start));
     }
 
 
     private static void fun1() {
         List<Future<Integer>> dealResult = new ArrayList<>();
         int pageSize = 100;
-        int totalRecord = 10000;
+        int totalRecord = 100000;
         int pageCount = (totalRecord  +  pageSize  - 1) / pageSize;
         List<Integer> bigList = new ArrayList<>(totalRecord);
         initBigList(bigList, totalRecord);
@@ -36,7 +41,12 @@ public class DealBigList {
                 end = totalRecord - 1;
             }*/
             DealBigListHandler handler = new DealBigListHandler(bigList.subList(start, end));
-            dealResult.add(executorService.submit(handler));
+            try {
+                dealResult.add(executorService.submit(handler));
+            } catch (Exception e) {
+                System.out.println("异常");
+            }
+
         }
 
         //打印执行情况
@@ -44,6 +54,7 @@ public class DealBigList {
         for (Future<Integer> integerFuture : dealResult) {
             try {
                 result += integerFuture.get();
+                System.out.println("result : " + result);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
@@ -55,6 +66,7 @@ public class DealBigList {
             int result = 0;
             for (Future<Integer> integerFuture : dealResult) {
                 result += integerFuture.get();
+                System.out.println(result);
             }
             System.out.println(result);
         } catch (InterruptedException e) {
@@ -62,7 +74,7 @@ public class DealBigList {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }*/
-
+        System.out.println("over");
     }
 
     private static void initBigList(List<Integer> bigList, int size) {
@@ -79,6 +91,11 @@ public class DealBigList {
         @Override
         public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
             System.out.println("被拒接的任务");
+            if (!executor.isShutdown()) {//改变future的状态，让其不会一直阻塞get
+                if (r != null && r instanceof FutureTask) {
+                    ((FutureTask) r).cancel(true);
+                }
+            }
         }
     }
 }
@@ -101,7 +118,7 @@ class DealBigListHandler implements Callable<Integer> {
         if (null != this.taskList) {
             for (Integer temp : taskList) {
                 SleepUtils.sleepMillis(1);//处理100毫秒
-                /*if (temp == 1000) {
+                /*if (temp == 500) {
                     throw new RuntimeException("异常了");
                 }*/
             }
