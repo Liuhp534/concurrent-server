@@ -19,8 +19,9 @@ public class CustomLockMain {
     private static void fun1() {
         Sequence sequence = new Sequence();
         CustomLock lock = new CustomLock();
-        for (int i = 0; i < 50; i ++) {
+        for (int i = 0; i < 500; i ++) {
             ThreadPoolExecutorUtils.executorService.submit(() -> {
+                System.out.println(Thread.currentThread().getName());
                 while (threadFlag) {
                     lock.lock();
                     Integer commonInt = sequence.getNext();
