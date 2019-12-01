@@ -3,7 +3,9 @@ package cn.lock;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
-
+/*
+* 这个是别人的例子，参考用的
+* */
 public class MyLock implements Lock {
 	
 	private boolean isLocked = false;
