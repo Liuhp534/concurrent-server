@@ -59,7 +59,7 @@ public class IdWorker{
         return System.currentTimeMillis();
     }
 
-    public synchronized long nextId() {
+    public  long nextId() {
         long timestamp = timeGen();
 
         if (timestamp < lastTimestamp) {
@@ -78,8 +78,8 @@ public class IdWorker{
         }
 
         lastTimestamp = timestamp;
-        System.out.println(new BigInteger(String.valueOf(timestamp - twepoch)).toString(2));
-        System.out.println(new BigInteger(String.valueOf(timestamp - twepoch)).toString(2).length());
+        //System.out.println(new BigInteger(String.valueOf(timestamp - twepoch)).toString(2));
+        //System.out.println(new BigInteger(String.valueOf(timestamp - twepoch)).toString(2).length());
         return ((timestamp - twepoch) << timestampLeftShift) | (datacenterId << datacenterIdShift) |  (workerId << workerIdShift) | sequence;
     }
 
@@ -105,14 +105,15 @@ public class IdWorker{
 
     //---------------测试---------------
     public static void main(String[] args) {
-        System.out.println(Integer.toBinaryString(-1));
+        /*System.out.println(Integer.toBinaryString(-1));
         System.out.println(Integer.toBinaryString(12345));
         System.out.println(Integer.toBinaryString(-12345));
-        System.out.println(Integer.toBinaryString(53191));
-       /* IdWorker worker = new IdWorker(1,1,1);
+        System.out.println(Integer.toBinaryString(53191));*/
+        IdWorker worker = new IdWorker(2,2,2);
         for (int i = 0; i < 30; i++) {
+            System.out.println(String.valueOf(worker.nextId()).length());
             System.out.println(worker.nextId());
-        }*/
+        }
     }
 
 }
