@@ -20,7 +20,7 @@ public class LockInterruptTest {
 	Lock lock = new ReentrantLock();
 
 	public static void main(String[] args) {
-
+        fun1();
 	}
 
 	/*
