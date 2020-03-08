@@ -1,5 +1,7 @@
 package cn.threadpool;
 
+import org.omg.SendingContext.RunTime;
+
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -28,5 +30,11 @@ public class ThreadPoolExecutorUtils {
             new LinkedBlockingQueue<Runnable>(), factory);//核心线程数2，最大线程数4，线程多久空闲销毁，工作队列
 
 
+    /*
+    * 查看cpu数量
+    * */
+    public static void main(String[] args) {
+        System.out.println(Runtime.getRuntime().availableProcessors());
+    }
 
 }
