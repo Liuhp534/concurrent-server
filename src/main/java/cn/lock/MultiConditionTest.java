@@ -26,24 +26,24 @@ public class MultiConditionTest {
 
 
         new Thread(() -> {
-            printUtils.print();
+            //printUtils.print();
             //singlePrintUtils.print();
-            //syncPrintUtils.print();
+            syncPrintUtils.print();
         }, "B").start();
         SleepUtils.sleepSeconds(1);
         new Thread(() -> {
-            printUtils.print();
+            //printUtils.print();
             //singlePrintUtils.print();
-            //syncPrintUtils.print();
+            syncPrintUtils.print();
         }, "C").start();
 
 
         SleepUtils.sleepSeconds(1);
 
         new Thread(() -> {
-            printUtils.print();
+            //printUtils.print();
             //singlePrintUtils.print();
-            //syncPrintUtils.print();
+            syncPrintUtils.print();
         }, "A").start();
 
 
@@ -70,12 +70,14 @@ class SyncPrintUtils {
                         //System.out.println(Thread.currentThread().getName() + "-进入等待");
                         lock.wait();
                         System.out.println("唤醒=" + Thread.currentThread().getName());
-                        //SleepUtils.sleepSeconds(15);
+                        SleepUtils.sleepSeconds(10);
                     }
                     //干活
                     this.printAndSetNextThreadName();
                     //通知
                     lock.notifyAll();
+                    System.out.println("唤醒全部");
+                    SleepUtils.sleepSeconds(30);
                 }
             } catch (Exception e) {
                 System.out.println("打印状态出错");
