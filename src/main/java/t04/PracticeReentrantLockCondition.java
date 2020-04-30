@@ -15,8 +15,8 @@ public class PracticeReentrantLockCondition {
 
     public static void main(String[] args) {
         //m1();
-        //m2();
-        m3();
+        m2();
+        //m3();
     }
     /*通过condition，按照abc顺序打印
     * 1、开启三个线程，每个线程对应自己的打印目标；
@@ -34,24 +34,23 @@ public class PracticeReentrantLockCondition {
     private static final void m2() {
         final Object obj = new Object();
         for (int i = 0; i < 3; i ++) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    synchronized (obj) {
-                        System.out.println(Thread.currentThread().getName() + " 进入锁");
-                        while (true) {
-                            obj.notifyAll();
-                            SleepUtils.sleepMillis(2000);
-                            System.out.println(Thread.currentThread().getName() + "- abc");
-                            try {
-                                obj.wait();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+            new Thread(() -> {
+                synchronized (obj) {
+                    System.out.println(Thread.currentThread().getName() + " 进入锁");
+                    while (true) {
+                        obj.notifyAll();
+                        SleepUtils.sleepMillis(1000);
+                        System.out.println(Thread.currentThread().getName() + "- abc");
+                        try {
+                            System.out.println(Thread.currentThread().getName() + " 进入等待");
+                            obj.wait();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
                     }
                 }
-            }).start();
+            }, "" + i).start();
+            SleepUtils.sleepSeconds(5);
         }
     }
 
@@ -66,7 +65,7 @@ public class PracticeReentrantLockCondition {
                 public void run() {
                     try {
                         reenLock.lock();
-                        System.out.println(Thread.currentThread().getName() + " 进入锁");
+                        //System.out.println(Thread.currentThread().getName() + " 进入锁");
                         while (true) {
                             con1.signalAll();
                             SleepUtils.sleepMillis(500);
@@ -106,13 +105,14 @@ class PrintThread extends Thread {
         synchronized (this.printUtil) {
             while (true) {
                 while (this.threadStr.equals(this.printUtil.getPrintStr())) {
-                    SleepUtils.sleepMillis(100);
+                    SleepUtils.sleepMillis(5000);
                     this.printUtil.printData();
                     this.printUtil.setNextPrintStr(this.threadStr);
                     this.printUtil.notifyAll();//可以唤醒所有的，没有all只会唤醒一个
                 }
                 try {
                     this.printUtil.wait();
+                    System.out.println(Thread.currentThread().getName()+"-唤醒");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -156,9 +156,9 @@ class PrintUtil {
     }
 
     public void printData() {
-        System.out.print(this.printStr);
+        System.out.println(this.printStr);
         if ("C".equals(this.printStr)) {
-            System.out.println();
+            //System.out.println();
         }
     }
 }
