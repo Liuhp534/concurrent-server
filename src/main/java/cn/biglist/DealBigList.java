@@ -25,8 +25,13 @@ public class DealBigList {
     //10-耗时=1998
     //50-耗时=417
     //100-耗时=220
-    static ExecutorService executorService = new ThreadPoolExecutor(1, 1, 60L, TimeUnit.SECONDS,
-            new LinkedBlockingQueue<Runnable>(1));//核心线程数2，最大线程数4，线程多久空闲销毁，工作队列
+    static ExecutorService executorService = new ThreadPoolExecutor(50, 50, 60L, TimeUnit.SECONDS,
+            new LinkedBlockingQueue<Runnable>(), new ThreadFactory() {
+        @Override
+        public Thread newThread(Runnable r) {
+            return new Thread(r,"bigList-thread");
+        }
+    });//核心线程数2，最大线程数4，线程多久空闲销毁，工作队列
 
 
     public static void main(String[] args) {
@@ -44,10 +49,11 @@ public class DealBigList {
     /*
      * 如果1和2两个步骤的异常，没有捕获，那么就会导致3不会执行完全
      * 好吧3try/catch也不能执行完，原来是catch的异常没有捕获到，导致的，直接Exception就可以捕获所有的
+     * 耗时=40303,pageSize=100,totalRecord=999
      * */
     private static void fun1() {
 
-        int pageSize = 100;
+        int pageSize = 1;
         int totalRecord = 999;
         int pageCount = (totalRecord  +  pageSize  - 1) / pageSize;
         List<Integer> bigList = new ArrayList<>(totalRecord);
@@ -152,7 +158,7 @@ class DealBigListHandler implements Callable<Integer> {
         System.out.println(Thread.currentThread().getName() + "执行中，size=" + this.taskList.size());
         if (null != this.taskList) {
             for (Integer temp : taskList) {
-                SleepUtils.sleepMillis(1);//处理100毫秒
+                SleepUtils.sleepMillis(400);//处理100毫秒
                 /*if (temp == 500) {
                     throw new RuntimeException("异常了");
                 }*/
